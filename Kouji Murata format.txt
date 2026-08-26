@@ -49,12 +49,12 @@ NOTE: One song in the data (usually $0A) is empty, and calling this number is us
 Commands
 =======================================
 In the majority of games, each channel's sequence is comprised of the following commands:
-00-BF = Play note or rest with length
+00-CF = Play note or rest with length
 	Format: xxxxyyyy (X = note or rest (if X = C, then rest, otherwise note), Y = length (1-15, if Y = 0, then 16)
 D0-DF = Set channel parameters
  - On channel 3 for both music and sound effects: CCCCxxxx yyyyyyyy zaaaaaaa (bbbbbbbb)
 	(C = always $D, x = speed, y = waveform, z = if set, then b is used, a = envelope sequence, b = secondary decay value)
- - On channel 4 for music (not in Bionic Commando): CCCCxxxx
+ - On channel 4 for music: CCCCxxxx
 	(C = always $D, x = speed)
  - On channel 4 for sound effects: CCCCxxxx yyyyyyyy zzzzzzzz abbbbbbb (cccccccc dddddddd)
 	(C = always $D, x = speed, y = duty/volume, z = decay, a = if set, then c and d are used, b = envelope, c = decay parameters 2, d = decay parameters 3)
@@ -129,7 +129,9 @@ Differences in games
 There are several differences between various games using versions of the sound engine:
 
  - Bionic Commando was the first game to use this sound engine, and is thus uses the earliest version. Compared to other games, the Dx command on music channel 4 does not have a special handler. Starting from MM3, however, this was changed to just control the speed, since music channel 4 is only used to play sound effects on SFX channels for percussion.
+ - Also in Bionic Commando, channel 3 works slightly differently - byte 4 is always present, but only loaded if value Z is signed (see above).
  - Bionic Commando, Mega Man 3, and Itsudemo Nyanto Wonderful store all their sound data in a single bank and don't use bankswitching. Mega Man 4 and 5 use 2 interchangeable banks which both share sound effects and have different sets of music, which are switched externally. In the GBC games Pocket King and Monster Traveler, the bankswitching is built into the driver (see below).
+ - In Mega Man 5, command F4 is used for an unknown command with 2 parameters, seemingly used to add parameter 2 to the RAM address with parameter 1 added to the base address. This should be investigated.
  - Bionic Commando and Mega Man games have a jump table at the start of the sound bank which is used to easily access functions to initialize the sound engine and play music or sound effects as well as stop audio. This is not present in Itsudemo Nyanto Wonderful.
  - The GBC game Pocket King uses a revised version of the format with some differences:
 	 - Unlike earlier games which store a copy of the driver in each individual bank and use an external bankswitching scheme, this game has bankswitching built into the driver with an additional parameter used for the song headers as follows:
@@ -147,14 +149,14 @@ There are several differences between various games using versions of the sound 
 	
  - Monster Traveler, the last game known to use a version of this driver, is similar to Pocket King, but completely changes the sequence format, using the following commands:
 	00 = Rest
-		Parameters: xyyyyyyy (zzzzzzzz) (x = if set, then use z, y = low byte of note, z = high byte of note)
+		Parameters: xyyyyyyy (zzzzzzzz) abbbbbbb (cccccccc) (x = if set, then use z, y = low byte of note length, z = high byte of note length, a = if set, then use c, b = low byte of note duration, c = high byte of note duration)
 	01-7F = Play note
-		Parameters: xyyyyyyy (zzzzzzzz) (x = if set, then use z, y = low byte of note, z = high byte of note)
+		Parameters: xyyyyyyy (zzzzzzzz) abbbbbbb (cccccccc) (x = if set, then use z, y = low byte of note length, z = high byte of note length, a = if set, then use c, b = low byte of note duration, c = high byte of note duration)
 	80 = Set volume/envelope
 		Parameters: xxxxxxxx (x = value)
 	81 = Set transpose (per-channel)
 		Parameters: xxxxxxxx (x = value, signed)
-	82 = Set instrument (wave/duty values?)
+	82 = Set waveform
 		Parameters: xxxxxxxx (x = value)
 	83 = Set vibrato
 		Parameters: xxxxxxxx (x = value)
@@ -170,10 +172,10 @@ There are several differences between various games using versions of the sound 
 	89 = Disable pitch hold mask
 	8A = (no effect)
 	8B = (no effect)
-	8C = Jump to position
+	8C = Set pointer to envelope decay sequence loop
 		Parameters: xxxxxxxx xxxxxxxx (x = position, absolute)
 	8D = (no effect)
-	8E = Set pointer to envelope decay sequence
+	8E = Set pointer to envelope decay sequence loop
 		Parameters: xxxxxxxx xxxxxxxx (x = position, absolute)
 	8F = (no effect)
 	90 = (no effect)
