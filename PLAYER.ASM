@@ -78,10 +78,10 @@ db "SW"								;Swift
 db $00                              ;Not SGB
 
 ;$0147: Cartridge type
-db $19                              ;MBC5
+db $00                              ;ROM only
 
 ;$0148: Cartridge size
-db $01                              ;512 KBit
+db $00                              ;256 KBit
 
 ;$0149: Cartridge RAM
 db $00                              ;None
@@ -762,9 +762,6 @@ FontTiles:
 FontTilesEnd:
 
 include "MM3.ASM"					;Audio code and data from Mega Man 3
-
-SECTION "Padding", ROMX[AudioROM], BANK [$3]
-ds $4000
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
