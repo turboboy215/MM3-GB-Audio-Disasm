@@ -131,7 +131,10 @@ There are several differences between various games using versions of the sound 
  - Bionic Commando was the first game to use this sound engine, and is thus uses the earliest version. Compared to other games, the Dx command on music channel 4 does not have a special handler. Starting from MM3, however, this was changed to just control the speed, since music channel 4 is only used to play sound effects on SFX channels for percussion.
  - Also in Bionic Commando, channel 3 works slightly differently - byte 4 is always present, but only loaded if value Z is signed (see above).
  - Bionic Commando, Mega Man 3, and Itsudemo Nyanto Wonderful store all their sound data in a single bank and don't use bankswitching. Mega Man 4 and 5 use 2 interchangeable banks which both share sound effects and have different sets of music, which are switched externally. In the GBC games Pocket King and Monster Traveler, the bankswitching is built into the driver (see below).
- - In Mega Man 5, command F4 is used for an unknown command with 2 parameters, seemingly used to add parameter 2 to the RAM address with parameter 1 added to the base address. This should be investigated.
+ - In Mega Man 5, command F4 is used as follows:
+		F4 = Add a signed value to one of the current channel's RAM parameters
+			Parameters:xxxxxxxx yyyyyyyy (x = RAM offset, y = value to add, signed)
+			(NOTE: If the offset is $11 (envelope value), the envelope sequence is reloaded)
  - Bionic Commando and Mega Man games have a jump table at the start of the sound bank which is used to easily access functions to initialize the sound engine and play music or sound effects as well as stop audio. This is not present in Itsudemo Nyanto Wonderful.
  - The GBC game Pocket King uses a revised version of the format with some differences:
 	 - Unlike earlier games which store a copy of the driver in each individual bank and use an external bankswitching scheme, this game has bankswitching built into the driver with an additional parameter used for the song headers as follows:
