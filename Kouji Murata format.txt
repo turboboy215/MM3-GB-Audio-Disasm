@@ -147,8 +147,10 @@ There are several differences between various games using versions of the sound 
 	7 (2): Channel 4 pointer
 	 - VCMDs for channel sequences are mostly the same as previous games, but there are some differences:
 		Whereas earlier games, for both note and rest commands, use a length value of 16 if the higher bits are set to 0, Pocket King instead uses this as a flag to get the note's length from the following byte, making these notes a 2-byte command.
-		F4 = Set channel flag (purpose unknown)
-			Parameters: xxxxxxxx (x = value)
+ - The sound engine has new "rest" flags that control whether or not a note is "cut off" at a rest. Command F4 in this game, a "NOP" operation in most other games, uses these flags.
+ - The command F4 is used as follows:
+		F4 = Set the data flag - bit 3 makes a rest cut the note off
+		     Parameters: xxxxxxxx (x = value)
 	
  - Monster Traveler, the last game known to use a version of this driver, is similar to Pocket King, but completely changes the sequence format, using the following commands:
 	00 = Rest
