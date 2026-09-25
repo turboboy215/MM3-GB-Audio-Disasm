@@ -13218,6 +13218,7 @@ ClearCh4:
 	;Check if channel is on
 	ldh a, [rNR52]
 	bit 3, a
+	;If not, then return
 	jr z, AudioOffRet
 
 	xor a
