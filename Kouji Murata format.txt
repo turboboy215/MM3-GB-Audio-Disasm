@@ -152,60 +152,68 @@ There are several differences between various games using versions of the sound 
 		F4 = Set the data flag - bit 3 makes a rest cut the note off
 		     Parameters: xxxxxxxx (x = value)
 	
- - Monster Traveler, the last game known to use a version of this driver, is similar to Pocket King, but completely changes the sequence format, using the following commands:
+ - Monster Traveler, the last game known to use a version of this driver, is similar to Pocket King, but much code is reweritten, and completely changes the sequence format, using the following commands:
 	00 = Rest
 		Parameters: xyyyyyyy (zzzzzzzz) abbbbbbb (cccccccc) (x = if set, then use z, y = low byte of note length, z = high byte of note length, a = if set, then use c, b = low byte of note duration, c = high byte of note duration)
 	01-7F = Play note
 		Parameters: xyyyyyyy (zzzzzzzz) abbbbbbb (cccccccc) (x = if set, then use z, y = low byte of note length, z = high byte of note length, a = if set, then use c, b = low byte of note duration, c = high byte of note duration)
-	80 = Set volume/envelope
+	80 = ? (Sets unused variable)
 		Parameters: xxxxxxxx (x = value)
 	81 = Set transpose (per-channel)
 		Parameters: xxxxxxxx (x = value, signed)
-	82 = Set waveform
+	82 = Set duty/vol (channel 1/2)/Set waveform number (channel 3)
 		Parameters: xxxxxxxx (x = value)
-	83 = Set vibrato
+	83 = Set tuning
 		Parameters: xxxxxxxx (x = value)
 	84 = Set panning
 		Parameters: ------xx (- = unused, x = pan value (00 = none, 10 = L, 10 = R, 11 = L/R))
-	85 = Set duty
+	85 = Set duty/noise mode (SFX channel 4)
 		Parameters: xxxxxxxx (x = value)
-	86 = (no effect)
-	87 = Set envelope velocity
+	86 = Skip 1 byte
+		Parameters: xxxxxxxx
+	87 = Set note length multiplier
 		Parameters: ----xxxx (- = unused, x = value)
-	88 = Enable pitch hold mask (stop note pitch from changing for amount of time)
+	88 = Frequency sweep on
 		Parameters: -xxxxxxx (- = unused, x = value)
-	89 = Disable pitch hold mask
-	8A = (no effect)
-	8B = (no effect)
-	8C = Set pointer to envelope decay sequence loop
-		Parameters: xxxxxxxx xxxxxxxx (x = position, absolute)
-	8D = (no effect)
-	8E = Set pointer to envelope decay sequence loop
-		Parameters: xxxxxxxx xxxxxxxx (x = position, absolute)
-	8F = (no effect)
-	90 = (no effect)
-	91 = (no effect)
+	89 = Frequency sweep off
+	8A = Skip 1 byte (same as 86)
+		Parameters: xxxxxxxx
+	8B = Skip 1 byte (same as 86)
+		Parameters: xxxxxxxx
+	8C = Set pointer to vibrato sequence loop
+		Parameters: xxxxxxxx xxxxxxxx (x = pointer)
+	8D = Skip 1 byte (same as 86)
+		Parameters: xxxxxxxx
+	8E = Set pointer to envelope sequence loop
+		Parameters: xxxxxxxx xxxxxxxx (x = pointer)
+	8F = Skip 1 byte (same as 86)
+		Parameters: xxxxxxxx
+	90 = Skip 1 byte (same as 86)
+		Parameters: xxxxxxxx
+	91 = Skip 1 byte (same as 86)
+		Parameters: xxxxxxxx
 	92 = Go to macro (subroutine) (1)
-		Parameters: xxxxxxxx xxxxxxxx (x = position, absolute)
+		Parameters: xxxxxxxx xxxxxxxx (x = pointer)
 		(NOTE: 1 level only)
 	93 = Return from macro (subroutine) (1)
-	94 = (no effect)
+	94 = (no effect) (same as 86)
 	95 = Start repeat (1) after command
-		Parameters: xxxxxxxx xxxxxxxx (x = position to jump back to, absolute)
 		(NOTE: 1 level only)
 	96 = End of repeat (1) - jump to start
-	Parameters: xxxxxxxx (x = times to repeat, 0 = infinite)
-	97 = (no effect)
-	98 = (no effect)
-	99 = (no effect)
+		Parameters: xxxxxxxx (x = times to repeat, 0 = infinite)
+	97 = Skip 1 byte (same as 86)
+		Parameters: xxxxxxxx
+	98 = Skip 1 byte (same as 86)
+		Parameters: xxxxxxxx
+	99 = (no effect) (same as 86)
 	9A = End of track
 	9B = Go to macro (subroutine) (1)
-		Parameters: xxxxxxxx xxxxxxxx (x = position, absolute)
+		Parameters: xxxxxxxx xxxxxxxx (x = pointer)
 		(NOTE: 1 level only)
 	9C = Return from macro (subroutine) (1)
 	9D = Start repeat (1) after command
-		Parameters: xxxxxxxx xxxxxxxx (x = position to jump back to, absolute)
 		(NOTE: 1 level only)
 	9E = End of repeat (1) - jump to start
-	9F = End of track (same as 9B)
+		Parameters: xxxxxxxx (x = times to repeat, 0 = infinite)
+	9F = End of track (same as 9A)
 	FF = End of track
